@@ -4,7 +4,6 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import LogoChatGPT from '../../public/logo-chat.png'
 import { signOut, useSession } from 'next-auth/react'
-import { useRequireAuth } from '@/lib/useRequireAuth'
 import axios from 'axios'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { cn } from '@/utils/clsx'
@@ -38,7 +37,6 @@ type PropsBrowser = {
 
 export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
   const [value, setValue] = useState('')
-  const authSession = useRequireAuth()
   const queryClient = useQueryClient()
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -131,9 +129,7 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
     setValue('')
   }
 
-  return !authSession ? (
-    <div className="flex h-screen w-full animate-pulse flex-col border-l-zinc-800 bg-zinc-900" />
-  ) : (
+  return (
     <div className="flex h-screen w-full flex-col items-center justify-between gap-4 border-l-zinc-800 bg-zinc-900 px-4 py-8 lg:px-16 xl:px-32">
       <div className="flex w-full items-center justify-between py-3">
         <div className="flex items-center justify-start gap-2">

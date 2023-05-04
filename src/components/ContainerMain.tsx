@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRequireAuth } from '@/lib/useRequireAuth'
 import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
@@ -13,7 +12,6 @@ type TChatTopic = {
 
 export const ContainerMain = () => {
   const [value, setValue] = useState('')
-  const authSession = useRequireAuth()
   const queryClient = useQueryClient()
   const router = useRouter()
 
@@ -53,9 +51,7 @@ export const ContainerMain = () => {
     setValue('')
   }
 
-  return !authSession ? (
-    <div className="flex h-screen w-full animate-pulse flex-col border-l-zinc-800 bg-zinc-900" />
-  ) : (
+  return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-24 border-l-zinc-800 bg-zinc-900 px-4 py-8 lg:px-16 xl:px-32">
       <h2 className="w-full text-center text-5xl font-bold text-zinc-300">
         Learnezy{' '}

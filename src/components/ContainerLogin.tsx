@@ -2,11 +2,8 @@
 import React from 'react'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { signIn } from 'next-auth/react'
-import { useRequireAuth } from '@/lib/useRequireAuth'
 
 export const ContainerLogin = () => {
-  useRequireAuth()
-
   function handleLogin() {
     signIn('github', {
       callbackUrl: '/',
