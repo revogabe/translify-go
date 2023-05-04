@@ -19,7 +19,7 @@ export default async function handler(
 
       const findUser = await db.user.findUnique({
         where: {
-          email: token,
+          id: token,
         },
       })
 
