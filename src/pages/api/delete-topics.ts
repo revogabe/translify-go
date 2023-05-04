@@ -32,6 +32,12 @@ export default async function handler(
         },
       })
 
+      await db.message.deleteMany({
+        where: {
+          systemId: query.systemId,
+        },
+      })
+
       if (!deleteSystem) {
         return res.status(404).send({ message: 'System not found' })
       }

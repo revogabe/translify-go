@@ -76,7 +76,7 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
         data,
         {
           headers: {
-            Authorization: session?.user?.email,
+            Authorization: session?.user?.id,
           },
         },
       )
@@ -134,7 +134,7 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
   return !authSession ? (
     <div className="flex h-screen w-full animate-pulse flex-col border-l-zinc-800 bg-zinc-900" />
   ) : (
-    <div className="flex h-screen w-full flex-col items-center justify-between gap-4 border-l-zinc-800 bg-zinc-900 px-32 py-8">
+    <div className="flex h-screen w-full flex-col items-center justify-between gap-4 border-l-zinc-800 bg-zinc-900 px-4 py-8 lg:px-16 xl:px-32">
       <div className="flex w-full items-center justify-between py-3">
         <div className="flex items-center justify-start gap-2">
           <Image

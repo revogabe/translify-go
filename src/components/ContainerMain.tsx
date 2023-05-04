@@ -1,8 +1,5 @@
 'use client'
-
-import Image from 'next/image'
 import React, { useState } from 'react'
-import LogoChatGPT from '../../public/logo-chat.png'
 import { useSession } from 'next-auth/react'
 import { useRequireAuth } from '@/lib/useRequireAuth'
 import axios from 'axios'
@@ -29,7 +26,7 @@ export const ContainerMain = () => {
         createData,
         {
           headers: {
-            Authorization: session?.user?.email,
+            Authorization: session?.user?.id,
           },
         },
       )
@@ -59,31 +56,28 @@ export const ContainerMain = () => {
   return !authSession ? (
     <div className="flex h-screen w-full animate-pulse flex-col border-l-zinc-800 bg-zinc-900" />
   ) : (
-    <div className="flex h-screen w-full flex-col items-center justify-between gap-4 border-l-zinc-800 bg-zinc-900 px-32 py-8">
-      <div className="flex w-full items-center justify-between py-3">
-        <div className="flex items-center justify-start gap-2">
-          <Image
-            src={LogoChatGPT}
-            alt="Logo ChatGPT"
-            quality={100}
-            width={2000}
-            height={2000}
-            className="h-16 w-16"
-          />
-          <div>
-            <h2 className="text-lg font-bold text-zinc-300">Learnezy GO</h2>
-            <div className="flex items-center justify-start gap-2">
-              <div className="h-3 w-3 rounded-full bg-emerald-400" />
-              <p className="flex items-center justify-start gap-2 text-sm text-zinc-400">
-                Online
-              </p>
-            </div>
-          </div>
+    <div className="flex h-screen w-full flex-col items-center justify-center gap-24 border-l-zinc-800 bg-zinc-900 px-4 py-8 lg:px-16 xl:px-32">
+      <h2 className="w-full text-center text-5xl font-bold text-zinc-300">
+        Learnezy{' '}
+        <span className="rounded-lg bg-emerald-600 p-2 text-white">GO</span>
+      </h2>
+      <div className="grid w-full grid-cols-3 gap-4 px-6 text-zinc-200 opacity-60 max-xl:grid-cols-1 lg:max-w-5xl">
+        <div className="flex items-center rounded-lg bg-zinc-800 p-6 xl:justify-center">
+          <p>Passo 1: Escolha um assunto para o seu chat</p>
+        </div>
+        <div className="flex items-center  rounded-lg bg-zinc-800 p-6 xl:justify-center">
+          <p>Passo 2: Inicie a conversa em inglês</p>
+        </div>
+        <div className="flex items-center  rounded-lg bg-zinc-800 p-6 xl:justify-center">
+          <p>
+            Passo 3: Continue a conversar naturalmente que o LearnezyGO vai te
+            ajudar no restante
+          </p>
         </div>
       </div>
       <form
         onSubmit={handleSendMessage}
-        className="group relative flex max-h-24 w-full px-6"
+        className="group relative flex max-h-24 w-full max-w-5xl px-6"
       >
         <input
           onChange={(event) => setValue(event.target.value)}
@@ -91,7 +85,7 @@ export const ContainerMain = () => {
           type="text"
           name="title"
           autoComplete="off"
-          placeholder="Digite um nome para o seu chat"
+          placeholder="Digite um assunto para o seu chat - ( Exemplo: Falar sobre NFL )"
           className="w-full rounded-lg bg-zinc-950/50 px-8 py-6 pr-16 text-sm text-zinc-300 outline-none duration-100 ease-out placeholder:text-zinc-600 focus:shadow-[0_0_0_1px] focus:shadow-emerald-400"
         />
       </form>

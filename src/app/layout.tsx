@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="flex">
+      <body className="flex bg-zinc-900">
         <Provider>
           <SideBar />
           <div className="w-full">{children}</div>
