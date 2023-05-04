@@ -48,7 +48,7 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
     queryKey: ['chat', systemIdProps],
     queryFn: async () => {
       const response = await axios.get<TChat>(
-        `http://localhost:3000/api/history-chat?systemId=${systemIdProps}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/history-chat?systemId=${systemIdProps}`,
         {
           headers: {
             Authorization: session?.user?.email,
@@ -72,7 +72,7 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
   const mutate = useMutation({
     mutationFn: async (data: TChatRequest) => {
       const response = await axios.post<TChatResponse>(
-        'http://localhost:3000/api/create-message',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/create-message`,
         data,
         {
           headers: {

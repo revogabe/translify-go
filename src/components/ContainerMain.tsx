@@ -22,7 +22,7 @@ export const ContainerMain = () => {
   const mutate = useMutation({
     mutationFn: async ({ createData }: { createData: TChatTopic }) => {
       const response = await axios.post<TChatTopic>(
-        'http://localhost:3000/api/create-topics',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/create-topics`,
         createData,
         {
           headers: {

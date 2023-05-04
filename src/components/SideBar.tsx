@@ -42,7 +42,7 @@ export const SideBar = () => {
     queryKey: ['topics'],
     queryFn: async () => {
       const response = await axios.get<TopicsProps[]>(
-        `http://localhost:3000/api/query-topics`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/query-topics`,
         {
           headers: {
             Authorization: session?.user?.id,
@@ -57,7 +57,7 @@ export const SideBar = () => {
   const mutate = useMutation({
     mutationFn: async ({ data }: { data: SystemProps }) => {
       const response = await axios.delete<SystemProps>(
-        'http://localhost:3000/api/delete-topics?systemId=' + data.systemId,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/delete-topics?systemId=${data.systemId}`,
         {
           headers: {
             Authorization: session?.user?.id,
