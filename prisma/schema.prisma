@@ -1,12 +1,11 @@
-datasource db {
-  provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("NEXT_PUBLIC_DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Account {
@@ -26,6 +25,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -34,6 +34,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -42,8 +44,10 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-  sessions      Session[]
+
+  accounts Account[]
+  sessions Session[]
+  system   System[]
 }
 
 model VerificationToken {
@@ -52,4 +56,29 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model System {
+  id      String @id @default(cuid())
+  title   String
+  role    String
+  content String @db.LongText
+
+  message Message[]
+  User    User?     @relation(fields: [userId], references: [id])
+  userId  String?
+
+  @@index([userId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  createdAt DateTime
+  role      String
+  content   String   @db.LongText
+
+  System   System? @relation(fields: [systemId], references: [id])
+  systemId String?
+
+  @@index([systemId])
 }

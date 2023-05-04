@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Provider from './Provider'
+import { SideBar } from '@/components/SideBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,9 +13,12 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Provider>{children}</Provider>
+    <html lang="en" className={inter.className}>
+      <body className="flex">
+        <Provider>
+          <SideBar />
+          <div className="w-full">{children}</div>
+        </Provider>
       </body>
     </html>
   )
