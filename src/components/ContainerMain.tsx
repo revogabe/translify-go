@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import { ChatBubbleIcon } from '@radix-ui/react-icons'
 
 type TChatTopic = {
   title: string
@@ -31,9 +32,11 @@ export const ContainerMain = () => {
 
       return response.data.id
     },
-
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['topics'])
+    onSettled(data) {
+      router.push(`/chat/${data}`)
+    },
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries(['topics'])
       router.push(`/chat/${data}`)
     },
   })
@@ -51,22 +54,29 @@ export const ContainerMain = () => {
     setValue('')
   }
 
-  return (
+  return mutate.isLoading ? (
+    <div className="flex h-screen w-full flex-col items-center justify-center gap-24 border-l-zinc-800 bg-zinc-900 px-4 py-8 lg:px-16 xl:px-32">
+      <div className="flex animate-pulse items-center justify-center gap-4 rounded-lg bg-zinc-800 p-6">
+        <ChatBubbleIcon width={24} height={24} />
+        <p>Criando Chat...</p>
+      </div>
+    </div>
+  ) : (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-24 border-l-zinc-800 bg-zinc-900 px-4 py-8 lg:px-16 xl:px-32">
       <h2 className="w-full text-center text-5xl font-bold text-zinc-300">
-        Learnezy{' '}
+        Translify{' '}
         <span className="rounded-lg bg-emerald-600 p-2 text-white">GO</span>
       </h2>
-      <div className="grid w-full grid-cols-3 gap-4 px-6 text-zinc-200 opacity-60 max-xl:grid-cols-1 lg:max-w-5xl">
-        <div className="flex items-center rounded-lg bg-zinc-800 p-6 xl:justify-center">
+      <div className="grid w-full max-w-lg grid-cols-1 gap-4 px-6 text-zinc-200 opacity-60 lg:max-w-2xl">
+        <div className="flex items-center justify-start rounded-lg bg-zinc-800 p-6">
           <p>Passo 1: Escolha um assunto para o seu chat</p>
         </div>
-        <div className="flex items-center  rounded-lg bg-zinc-800 p-6 xl:justify-center">
+        <div className="flex items-center  justify-start rounded-lg bg-zinc-800 p-6">
           <p>Passo 2: Inicie a conversa em inglês</p>
         </div>
-        <div className="flex items-center  rounded-lg bg-zinc-800 p-6 xl:justify-center">
+        <div className="flex items-center  justify-start rounded-lg bg-zinc-800 p-6">
           <p>
-            Passo 3: Continue a conversar naturalmente que o LearnezyGO vai te
+            Passo 3: Continue a conversar naturalmente que o TranslifyGO vai te
             ajudar no restante
           </p>
         </div>

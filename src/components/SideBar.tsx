@@ -67,7 +67,6 @@ export const SideBar = () => {
 
       return response.data
     },
-
     onSuccess: () => {
       queryClient.invalidateQueries(['topics'])
     },
@@ -105,17 +104,35 @@ export const SideBar = () => {
           {data?.map((topic: TopicsProps) => (
             <div
               key={topic.id}
-              className="flex items-center justify-between gap-2 rounded-lg bg-zinc-700/50 font-medium text-zinc-300 duration-150 ease-out hover:bg-zinc-700 hover:text-white active:scale-95"
+              className={cn(
+                'flex items-center justify-between gap-2 rounded-lg bg-zinc-700/50 font-medium text-zinc-300 duration-150 ease-out',
+                {
+                  'animate-pulse': mutate.isLoading,
+                },
+                {
+                  'hover:bg-zinc-700 hover:text-white active:scale-95':
+                    !mutate.isLoading,
+                },
+              )}
             >
               <Link
                 className="flex h-full w-full items-center justify-start p-6"
-                href={`/chat/${topic.id}`}
+                href={mutate.isLoading ? '/' : `/chat/${topic.id}`}
               >
                 {topic.title}
               </Link>
               <TrashIcon
-                onClick={() => handleDelete(topic.id)}
-                className="mr-3 cursor-pointer rounded-lg p-2 text-zinc-500 duration-150 ease-out hover:bg-zinc-900/50 hover:text-red-500"
+                onClick={() => !mutate.isLoading && handleDelete(topic.id)}
+                className={cn(
+                  'mr-3 cursor-pointer rounded-lg p-2 text-zinc-500 duration-150 ease-out ',
+                  {
+                    'animate-pulse': mutate.isLoading,
+                  },
+                  {
+                    'hover:bg-zinc-900/50 hover:text-red-500':
+                      !mutate.isLoading,
+                  },
+                )}
                 width={42}
                 height={42}
               />

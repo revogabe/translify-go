@@ -3,7 +3,7 @@ import * as ScrollArea from '@radix-ui/react-scroll-area'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import LogoChatGPT from '../../public/logo-chat.png'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { cn } from '@/utils/clsx'
@@ -142,7 +142,7 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
             className="h-16 w-16"
           />
           <div>
-            <h2 className="text-lg font-bold text-zinc-300">Learnezy GO</h2>
+            <h2 className="text-lg font-bold text-zinc-300">Translify GO</h2>
             <div className="flex items-center justify-start gap-2">
               <div className="h-3 w-3 rounded-full bg-emerald-400" />
               <p className="flex items-center justify-start gap-2 text-sm text-zinc-400">
@@ -151,12 +151,6 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
             </div>
           </div>
         </div>
-        <button
-          onClick={() => signOut()}
-          className="justify-self-end rounded-lg border border-red-400 bg-red-500 px-4 py-2 text-sm text-zinc-100 duration-150 ease-out hover:bg-red-300 hover:text-red-500"
-        >
-          Sair
-        </button>
       </div>
       <ScrollArea.Root className="h-[80%] w-full">
         <ScrollArea.Viewport
@@ -189,9 +183,9 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
                   )}
                 >
                   <p className="rounded-lg text-sm text-zinc-400">
-                    {role === 'user' ? 'You' : 'LearnezyGO'}
+                    {role === 'user' ? session?.user?.name : 'TranslifyGO'}
                   </p>
-                  <p className="w-full">
+                  <p className="w-full whitespace-pre-line">
                     {role === 'user'
                       ? content.replace(
                           'Responda minha seguinte frase em ingles e em seguinda a corrija em portugues, me explique oque eu errei e porque e me responda uma proxima pergunta em inglês:',
@@ -212,6 +206,19 @@ export const ContainerBrowser = ({ systemIdProps }: PropsBrowser) => {
                     <div className="delay-2 mr-2 h-3 w-3 animate-bounce rounded-full bg-gray-500" />
                     <div className="delay-3 h-3 w-3 animate-bounce rounded-full bg-gray-500" />
                   </div>
+                </div>
+              </div>
+            )}
+            {!data?.historyChat?.length && (
+              <div className="flex h-[50vh] w-full flex-col items-center justify-center">
+                <div className="flex max-w-md flex-col items-center justify-center gap-2 rounded-xl  p-6">
+                  <p className="text-lg font-medium text-zinc-500">
+                    Não há mensagens
+                  </p>
+                  <p className="text-center text-base text-zinc-600">
+                    Inicie a conversa em inglês que o Translify vai te ajudar no
+                    restante
+                  </p>
                 </div>
               </div>
             )}
