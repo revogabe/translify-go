@@ -40,7 +40,7 @@ export default async function handler(
       const newMessage = await db.message.create({
         data: {
           role,
-          content: `Responda minha seguinte frase em ingles e em seguinda a corrija em portugues, me explique oque eu errei e porque e me responda uma proxima pergunta em inglês: ${content}`,
+          content: `Me corriga explicando o que eu errei em português e porque eu deveria usar a forma correta, porém se eu acertei tudo você me elogia e vamos para a proxima pergunta: ${content}`,
           createdAt: new Date(),
           systemId,
         },
