@@ -5,7 +5,6 @@ import {
   ArrowRightIcon,
   ExitIcon,
   PersonIcon,
-  PlusCircledIcon,
   TrashIcon,
 } from '@radix-ui/react-icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -15,6 +14,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import React, { useState } from 'react'
+import { ModalNewChat } from './ModalNewChat'
+import { motion } from 'framer-motion'
 
 type TopicsProps = {
   id: string
@@ -29,14 +30,12 @@ type SystemProps = {
 }
 
 export const SideBar = () => {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const queryClient = useQueryClient()
   const pathName = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const isSizeX = useScreenWidthLessThanX(1024)
-
-  const isAuthenticated = status === 'authenticated'
 
   const { data } = useQuery({
     queryKey: ['topics'],
@@ -78,8 +77,15 @@ export const SideBar = () => {
       router.push('/')
     }
   }
-  return !isAuthenticated ? null : (
-    <div
+  return (
+    <motion.div
+      initial={{ translateX: '-90%', opacity: 0 }}
+      animate={{ translateX: 0, opacity: 1 }}
+      transition={{
+        type: 'spring',
+        stiffness: 260,
+        damping: 26,
+      }}
       className={cn(
         `relative z-30 h-screen duration-200 ease-out flex min-h-screen w-[420px] flex-col justify-between gap-6 bg-zinc-800 p-6 max-lg:fixed`,
         {
@@ -94,16 +100,18 @@ export const SideBar = () => {
         height={36}
       />
       <div className="flex flex-col gap-6">
-        <Link
-          href="/"
-          className="flex items-center justify-center gap-2 rounded-lg bg-zinc-950/25 p-4 font-medium text-zinc-300 duration-150 ease-out hover:bg-zinc-700 hover:text-white active:scale-95"
-        >
-          <PlusCircledIcon width={20} height={20} /> New Chat
-        </Link>
-        <div className="flex w-full flex-col gap-2 overflow-y-auto">
+        <ModalNewChat />
+        <div className="flex w-full flex-col gap-2 overflow-y-auto overflow-x-hidden">
           {data?.map((topic: TopicsProps) => (
-            <div
+            <motion.div
               key={topic.id}
+              initial={{ translateX: '-90%', opacity: 0 }}
+              animate={{ translateX: 0, opacity: 1 }}
+              transition={{
+                type: 'spring',
+                stiffness: 260,
+                damping: 32,
+              }}
               className={cn(
                 'flex items-center justify-between gap-2 rounded-lg bg-zinc-700/50 font-medium text-zinc-300 duration-150 ease-out',
                 {
@@ -136,7 +144,7 @@ export const SideBar = () => {
                 width={42}
                 height={42}
               />
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -166,6 +174,6 @@ export const SideBar = () => {
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
