@@ -129,7 +129,11 @@ export function SideBar() {
                 damping: 32,
               }}
               className={cn(
-                'flex items-center justify-between gap-2 rounded-lg bg-zinc-700/50 font-medium text-zinc-300 duration-150 ease-out hover:bg-zinc-700 hover:text-white active:scale-95',
+                'flex items-center justify-between gap-2 rounded-lg bg-zinc-700/50 font-medium border-2 border-transparent text-zinc-300 duration-150 ease-out hover:bg-zinc-700 hover:text-white active:scale-95',
+                {
+                  'border-zinc-600 bg-zinc-600/50':
+                    pathName === `/chat/${topic.id}`,
+                },
               )}
             >
               <Link
