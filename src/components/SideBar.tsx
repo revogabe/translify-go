@@ -34,7 +34,7 @@ export function SideBar() {
   const queryClient = useQueryClient()
   const pathName = usePathname()
   const router = useRouter()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const isSizeX = useScreenWidthLessThanX(1024)
   const { status } = useSession()
   const isAuth = status === 'authenticated'
@@ -95,8 +95,8 @@ export function SideBar() {
   }
   return isAuth ? (
     <motion.div
-      initial={{ translateX: '-90%', opacity: 0 }}
-      animate={{ translateX: 0, opacity: 1 }}
+      initial={{ translateX: '-100%' }}
+      animate={open === true && isSizeX ? { translateX: 0 } : {}}
       transition={{
         type: 'spring',
         stiffness: 260,
@@ -104,16 +104,18 @@ export function SideBar() {
       }}
       className={cn(
         `relative z-30 h-screen duration-200 ease-out flex min-h-screen w-[420px] flex-col justify-between gap-6 bg-zinc-800 p-6 max-lg:fixed`,
-        {
-          '-translate-x-full': !open && isSizeX,
-        },
       )}
     >
       <ArrowRightIcon
         onClick={() => setOpen(!open)}
-        className=" absolute -right-4 top-1/2 rounded-full bg-zinc-800 p-2 text-zinc-300 duration-150 ease-out hover:scale-105 hover:bg-zinc-700 lg:hidden"
-        width={36}
-        height={36}
+        className={cn(
+          ` absolute -right-6 transition-all rotate-0 top-1/2 z-30 rounded-full bg-zinc-800 p-2 text-zinc-300 duration-500 ease-out hover:scale-105 hover:bg-zinc-700 lg:hidden`,
+          {
+            '-rotate-180': open,
+          },
+        )}
+        width={52}
+        height={52}
       />
       <div className="flex flex-col gap-6">
         <ModalNewChat />
