@@ -1,5 +1,4 @@
 'use client'
-import useScreenWidthLessThanX from '@/hooks/witdhSize'
 import { cn } from '@/utils/clsx'
 import {
   ArrowRightIcon,
@@ -35,7 +34,6 @@ export function SideBar() {
   const pathName = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(true)
-  const isSizeX = useScreenWidthLessThanX(1024)
   const { status } = useSession()
   const isAuth = status === 'authenticated'
 
@@ -96,7 +94,7 @@ export function SideBar() {
   return isAuth ? (
     <motion.div
       initial={{ translateX: '-100%' }}
-      animate={open === true && isSizeX ? { translateX: 0 } : {}}
+      animate={open === true ? { translateX: 0 } : {}}
       transition={{
         type: 'spring',
         stiffness: 260,
