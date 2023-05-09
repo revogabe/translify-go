@@ -9,12 +9,13 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: 'Translify GO',
   description: 'Chat with artificial intelligence to learn english',
+  colorScheme: 'dark',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="flex bg-zinc-900">
+      <body className="flex bg-zinc-900 selection:bg-emerald-500 selection:text-white">
         <Provider>
           <SideBar />
           <div className="w-full">{children}</div>

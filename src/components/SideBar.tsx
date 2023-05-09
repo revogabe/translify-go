@@ -29,13 +29,15 @@ type SystemProps = {
   systemId: string
 }
 
-export const SideBar = () => {
+export function SideBar() {
   const { data: session } = useSession()
   const queryClient = useQueryClient()
   const pathName = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const isSizeX = useScreenWidthLessThanX(1024)
+  const { status } = useSession()
+  const isAuth = status === 'authenticated'
 
   const { data } = useQuery({
     queryKey: ['topics'],
@@ -91,7 +93,7 @@ export const SideBar = () => {
       router.push('/')
     }
   }
-  return (
+  return isAuth ? (
     <motion.div
       initial={{ translateX: '-90%', opacity: 0 }}
       animate={{ translateX: 0, opacity: 1 }}
@@ -175,5 +177,5 @@ export const SideBar = () => {
         </div>
       </div>
     </motion.div>
-  )
+  ) : null
 }
