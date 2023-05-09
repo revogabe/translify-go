@@ -66,7 +66,21 @@ export const SideBar = () => {
 
       return response.data
     },
-    onSuccess: () => {
+    onMutate: async (deleteChat) => {
+      await queryClient.cancelQueries({ queryKey: ['topics'] })
+
+      const previousTopics = queryClient.getQueryData(['topics'])
+
+      queryClient.setQueryData<TopicsProps[]>(['topics'], (old) => {
+        return old?.filter(({ id }) => id !== deleteChat.data.systemId)
+      })
+
+      return { previousTopics }
+    },
+    onError: (_err, _deleteTopics, context) => {
+      queryClient.setQueryData(['topics'], context?.previousTopics)
+    },
+    onSettled: () => {
       queryClient.invalidateQueries(['topics'])
     },
   })
@@ -102,7 +116,7 @@ export const SideBar = () => {
       <div className="flex flex-col gap-6">
         <ModalNewChat />
         <div className="flex w-full flex-col gap-2 overflow-y-auto overflow-x-hidden">
-          {data?.map((topic: TopicsProps) => (
+          {data?.map((topic) => (
             <motion.div
               key={topic.id}
               initial={{ translateX: '-90%', opacity: 0 }}
@@ -113,14 +127,7 @@ export const SideBar = () => {
                 damping: 32,
               }}
               className={cn(
-                'flex items-center justify-between gap-2 rounded-lg bg-zinc-700/50 font-medium text-zinc-300 duration-150 ease-out',
-                {
-                  'animate-pulse': mutate.isLoading,
-                },
-                {
-                  'hover:bg-zinc-700 hover:text-white active:scale-95':
-                    !mutate.isLoading,
-                },
+                'flex items-center justify-between gap-2 rounded-lg bg-zinc-700/50 font-medium text-zinc-300 duration-150 ease-out hover:bg-zinc-700 hover:text-white active:scale-95',
               )}
             >
               <Link
@@ -130,16 +137,9 @@ export const SideBar = () => {
                 {topic.title}
               </Link>
               <TrashIcon
-                onClick={() => !mutate.isLoading && handleDelete(topic.id)}
+                onClick={() => handleDelete(topic.id)}
                 className={cn(
-                  'mr-3 cursor-pointer rounded-lg p-2 text-zinc-500 duration-150 ease-out ',
-                  {
-                    'animate-pulse': mutate.isLoading,
-                  },
-                  {
-                    'hover:bg-zinc-900/50 hover:text-red-500':
-                      !mutate.isLoading,
-                  },
+                  'mr-3 cursor-pointer rounded-lg p-2 text-zinc-500 duration-150 ease-out hover:bg-zinc-900/50 hover:text-red-500',
                 )}
                 width={42}
                 height={42}

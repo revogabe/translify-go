@@ -15,6 +15,7 @@ type TChatTopic = {
 export function ModalNewChat() {
   const [value, setValue] = useState('')
   const [isPending, setIsPending] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const queryClient = useQueryClient()
   const router = useRouter()
@@ -42,6 +43,7 @@ export function ModalNewChat() {
       await queryClient.invalidateQueries(['topics'])
       router.push(`/chat/${data}`)
       setIsPending(false)
+      setIsOpen(false)
     },
   })
 
@@ -60,7 +62,13 @@ export function ModalNewChat() {
   }
 
   return (
-    <Dialog.Root onOpenChange={(open) => open === false && setIsPending(false)}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(open) => {
+        open === false && setIsPending(false)
+        setIsOpen(open)
+      }}
+    >
       <Dialog.Trigger asChild>
         <button className="flex items-center justify-center gap-2 rounded-lg bg-zinc-950/25 p-4 font-medium leading-none text-zinc-300 duration-150 ease-out hover:bg-zinc-700 hover:text-white focus:shadow-[0_0_0_2px] focus:shadow-emerald-500 focus:outline-none active:scale-95">
           <PlusCircledIcon width={20} height={20} /> New Chat
@@ -98,7 +106,7 @@ export function ModalNewChat() {
                 <div role="status">
                   <svg
                     aria-hidden="true"
-                    className="mr-2 inline h-8 w-8 animate-spin fill-green-500 text-gray-200 dark:text-gray-600"
+                    className="mr-4 inline h-6 w-6 animate-spin fill-emerald-500 text-gray-200 dark:text-gray-600"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +123,7 @@ export function ModalNewChat() {
                   <span className="sr-only">Loading...</span>
                 </div>
               ) : (
-                <PaperPlaneIcon width={24} height={24} />
+                <PaperPlaneIcon className="mr-4" width={24} height={24} />
               )}
             </button>
           </form>

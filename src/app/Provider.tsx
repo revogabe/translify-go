@@ -2,6 +2,7 @@
 import { ReactNode, useState } from 'react'
 import { SessionProvider } from 'next-auth/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export default function Provider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
@@ -13,7 +14,10 @@ export default function Provider({ children }: { children: ReactNode }) {
       // Re-fetches session when window is focused
       refetchOnWindowFocus={false}
     >
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </SessionProvider>
   )
 }
