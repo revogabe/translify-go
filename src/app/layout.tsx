@@ -3,6 +3,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import Provider from './Provider'
 import { SideBar } from '@/components/SideBar'
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Provider>
           <SideBar />
           <div className="w-full">{children}</div>
+          <Analytics />
         </Provider>
       </body>
     </html>
