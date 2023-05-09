@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="flex bg-zinc-900 selection:bg-emerald-500 selection:text-white">
         <Provider>
           <SideBar />
-          <div className="w-full">{children}</div>
+          <div className="w-full overflow-y-auto">{children}</div>
           <Analytics />
         </Provider>
       </body>
